@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Interactive 3D visualization and analysis tool for Euler-Bernoulli beam theory - structural mechanics simulation">
+    <meta name="keywords"
+        content="Euler-Bernoulli, beam theory, structural analysis, mechanics of materials, deflection, stress, 3D visualization">
+    <meta name="author" content="Structural Mechanics Lab">
+    <title>Euler-Bernoulli Beam Analysis | 3D Structural Mechanics Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">⚙️</span>
+                <h1>Euler-Bernoulli Beam Analysis</h1>
+            </div>
+            <p class="subtitle">Interactive 3D Structural Mechanics Simulation Tool</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Control Panel -->
+            <aside class="control-panel">
+                <div class="panel-section">
+                    <h2 class="section-title">
+                        <span class="icon">📐</span>
+                        Beam Type
+                    </h2>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="beamType" value="simply-supported" checked>
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Simply Supported</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="beamType" value="fixed-fixed">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Fixed-Fixed (Clamped)</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="beamType" value="cantilever">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Cantilever</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">
+                        <span class="icon">⚡</span>
+                        Load Type
+                    </h2>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="loadType" value="point" checked>
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Point Load</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="loadType" value="distributed">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Uniformly Distributed Load</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="loadType" value="moment">
+                            <span class="radio-custom"></span>
+                            <span class="radio-label">Applied Moment</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">
+                        <span class="icon">🔧</span>
+                        Material Properties
+                    </h2>
+                    <select id="material" class="select-input">
+                        <option value="steel">Structural Steel (E = 200 GPa)</option>
+                        <option value="aluminum">Aluminum Alloy (E = 70 GPa)</option>
+                        <option value="copper">Copper (E = 120 GPa)</option>
+                        <option value="wood">Timber (E = 12 GPa)</option>
+                        <option value="custom">Custom Material</option>
+                    </select>
+                    <div id="customMaterial" class="custom-input hidden">
+                        <label class="input-label">Elastic Modulus E (GPa)</label>
+                        <input type="number" id="customE" value="200" min="1" max="1000" step="1">
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">
+                        <span class="icon">📏</span>
+                        Geometry
+                    </h2>
+                    <div class="input-group">
+                        <label class="input-label">Span Length (L)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="length" value="2" min="0.1" max="20" step="0.1">
+                            <span class="unit">m</span>
+                        </div>
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label class="input-label">Width (b)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="width" value="0.1" min="0.01" max="2" step="0.01">
+                                <span class="unit">m</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Height (h)</label>
+                            <div class="input-with-unit">
+                                <input type="number" id="height" value="0.15" min="0.01" max="2" step="0.01">
+                                <span class="unit">m</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">
+                        <span class="icon">💪</span>
+                        Load Parameters
+                    </h2>
+                    <div class="input-group" id="pointLoadGroup">
+                        <label class="input-label">Point Load Magnitude (P)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="pointLoad" value="10000" min="1" max="1000000" step="100">
+                            <span class="unit">N</span>
+                        </div>
+                    </div>
+                    <div class="input-group" id="loadPositionGroup">
+                        <label class="input-label">Load Position (a)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="loadPosition" value="1" min="0" max="20" step="0.1">
+                            <span class="unit">m</span>
+                        </div>
+                    </div>
+                    <div class="input-group hidden" id="distributedLoadGroup">
+                        <label class="input-label">Distributed Load Intensity (q)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="distributedLoad" value="5000" min="1" max="100000" step="100">
+                            <span class="unit">N/m</span>
+                        </div>
+                    </div>
+                    <div class="input-group hidden" id="momentLoadGroup">
+                        <label class="input-label">Applied Moment (M₀)</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="momentLoad" value="5000" min="1" max="100000" step="100">
+                            <span class="unit">N·m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="calculateBtn" class="calculate-btn">
+                    <span class="btn-icon">🔄</span>
+                    Analyze Beam
+                </button>
+            </aside>
+
+            <!-- 3D Visualization Area -->
+            <section class="visualization-area">
+                <div class="canvas-container" id="canvasContainer">
+                    <canvas id="beamCanvas"></canvas>
+                    <div class="canvas-controls">
+                        <button id="resetView" class="control-btn" title="Reset View">🎯</button>
+                        <button id="toggleWireframe" class="control-btn" title="Toggle Wireframe">🔲</button>
+                        <button id="toggleStress" class="control-btn active" title="Toggle Stress Map">🌡️</button>
+                    </div>
+                    <div class="view-info">
+                        <span>Drag to rotate | Scroll to zoom</span>
+                    </div>
+                </div>
+
+                <!-- Results Panel -->
+                <div class="results-panel">
+                    <h2 class="results-title">📊 Analysis Results</h2>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-icon">📉</div>
+                            <div class="result-content">
+                                <span class="result-label">Max. Deflection</span>
+                                <span class="result-value" id="maxDeflection">-</span>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">⚠️</div>
+                            <div class="result-content">
+                                <span class="result-label">Max. Bending Stress</span>
+                                <span class="result-value" id="maxStress">-</span>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">📐</div>
+                            <div class="result-content">
+                                <span class="result-label">Max. Slope</span>
+                                <span class="result-value" id="maxSlope">-</span>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">🔄</div>
+                            <div class="result-content">
+                                <span class="result-label">Max. Bending Moment</span>
+                                <span class="result-value" id="maxMoment">-</span>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">✂️</div>
+                            <div class="result-content">
+                                <span class="result-label">Max. Shear Force</span>
+                                <span class="result-value" id="maxShear">-</span>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">📦</div>
+                            <div class="result-content">
+                                <span class="result-label">Moment of Inertia</span>
+                                <span class="result-value" id="momentOfInertia">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagrams -->
+                    <div class="diagrams-container">
+                        <div class="diagram-tabs">
+                            <button class="diagram-tab active" data-diagram="deflection">Deflection</button>
+                            <button class="diagram-tab" data-diagram="moment">Bending Moment</button>
+                            <button class="diagram-tab" data-diagram="shear">Shear Force</button>
+                        </div>
+                        <div class="diagram-canvas-container">
+                            <canvas id="diagramCanvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Theory Section -->
+        <section class="info-section">
+            <div class="formula-card">
+                <h3>Euler-Bernoulli Beam Equation</h3>
+                <div class="formula">EI · d⁴w/dx⁴ = q(x)</div>
+                <div class="formula-desc">
+                    <span><strong>E</strong>: Young's Modulus</span>
+                    <span><strong>I</strong>: Second Moment of Area</span>
+                    <span><strong>w</strong>: Transverse Deflection</span>
+                    <span><strong>q(x)</strong>: Distributed Load</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Three.js and Application Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="js/beam-calculator.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
