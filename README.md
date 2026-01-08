@@ -5,7 +5,17 @@ An interactive 3D web application for structural beam analysis based on classica
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
 
-![Application Screenshot](screenshot.png)
+### 3D Beam Visualization with Stress Coloring
+
+![3D Visualization](screenshots/3d-visualization.png)
+
+### Control Panel
+
+![Control Panel](screenshots/control-panel.png)
+
+### Analysis Results and Diagrams
+
+![Results and Diagrams](screenshots/results-diagram.png)
 
 ## Table of Contents
 
@@ -227,10 +237,6 @@ Handles:
 2. Beer, F.P., Johnston, E.R., DeWolf, J.T. (2015). *Mechanics of Materials* (7th ed.). McGraw-Hill.
 3. Timoshenko, S.P., Gere, J.M. (1972). *Mechanics of Materials*. Van Nostrand Reinhold.
 4. Gere, J.M., Goodno, B.J. (2018). *Mechanics of Materials* (9th ed.). Cengage Learning.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
